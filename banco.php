@@ -1,6 +1,10 @@
-<?php include "layout/header.html" ?>
+<?php 
+include "layout/header.html";
+include "menu.php"; 
+?>
 
 <h1>Produtos</h1>
+<?php echo '<h2>Bom dia ' . $_SESSION['email'] . '.</h2>'; ?>
 <table id="tabela" onload="readPessoas()">
 
 </table>

@@ -48,5 +48,6 @@ switch($q){
         $email = $_REQUEST["email"];
         $senha = $_REQUEST["senha"];
         $result = $pdo->sql("SELECT * FROM usuario WHERE email = '$email' AND senha = '$senha'");
+        print(json_encode($result->fetchAll()));
         break;
 }
