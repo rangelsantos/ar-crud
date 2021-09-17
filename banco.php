@@ -1,11 +1,12 @@
 <?php 
 include "layout/header.html";
-include "menu.php"; 
+include "menu.php";
+include "session.php";
 ?>
 
 <h1>Produtos</h1>
-<?php echo '<h2>Bom dia ' . $_SESSION['email'] . '.</h2>'; ?>
-<table id="tabela" onload="readPessoas()">
+<?php echo '<h2>Bom dia ' . $_SESSION['email'] . ' Bem Vindo ao Sistema.</h2>'; ?>
+<table id="tabela" onload="pullProdutos()">
 
 </table>
 <script>

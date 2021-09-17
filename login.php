@@ -16,7 +16,7 @@ if($result->rowCount() == 1){
     $_SESSION['status'] = true;
     $_SESSION['email'] = $usuario->email;
 
-    header("location: banco.php");
+    header("location: home.php");
     die();
 } else {
     echo "<h1>Erro de login</h1>";

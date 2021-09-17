@@ -1,3 +1,10 @@
+<?php
+session_start();
+$_SESSION['status'] = $_SESSION['status'] ?? NULL;
+if ($_SESSION['status'] == true) {
+    header("location: home.php");
+}
+?>
 <h1>Sistema de Dados</h1>
 
 <h2>Acesso a Base de Dados</h2>
