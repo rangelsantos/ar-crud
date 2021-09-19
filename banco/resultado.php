@@ -1,10 +1,11 @@
-<?php include "layout/header.html" ?>
+<?php 
+include "layout/header.html";
+include "menu.php";
+include "session.php";
 
-<?php
 if (isset($_GET["message"])) {
     $format_mensagem = '<div>Mensagem: %s</div>';
     printf($format_mensagem, $_GET["message"]);
 }
-?>
 
-<?php include "layout/footer.html" ?>
+include "layout/footer.html" ?>

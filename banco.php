@@ -1,79 +1,95 @@
-<?php 
-include "layout/header.html";
+<?php
 include "menu.php";
 include "session.php";
+$email = $_SESSION['email'];
 ?>
 
-<h1>Produtos</h1>
-<?php echo '<h2>Bom dia ' . $_SESSION['email'] . ' Bem Vindo ao Sistema.</h2>'; ?>
-<table id="tabela" onload="pullProdutos()">
+<!DOCTYPE html>
+<html>
 
-</table>
-<script>
-    function pullProdutos() {
-        document.getElementsById("tabela").innerHTML = "";
-        var xhttp;
-        xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                var response = JSON.parse(this.responseText);
-                var table = "<tr><th>Nome</th><th>Descrição</th><th>Codigo</th><th>Fabricante</th><th>Validade</th></tr>";
-                var newLine = "";
-                for (var i = response.length - 1; i >= 0; i--) {
-                    newLine += "<tr><td hidden=\"true\"><p>" + response[i].id + "</p></td><td ondblclick=\"includeEvents(this)\"><p>" + response[i].nome + "</p></td><td ondblclick=\"includeEvents(this)\"><p>" + response[i].descricao + "</p></td><td ondblclick=\"includeEvents(this)\"><p>" + response[i].codigo + "</p></td><td ondblclick=\"includeEvents(this)\"><p>" +
-                        response[i].fabricante + "</p></td><td ondblclick=\"includeEvents(this)\"><p>" +
-                        response[i].validade + "</p></td><td ondblclick=\"includeEvents(this)\"></tr>"
-                }
-                table += newLine;
-                document.getElementById("tabela").innerHTML = table;
-            }
-        };
-        xhttp.open("GET", "banco/operations.php?q=consulta", true);
-        xhttp.send();
-    }
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <title>AR - Rangel Santos</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
 
-    function includeEvents(elemento) { //tratamento do clique duplo nos elementos para edição dos dados
-        console.log(elemento)
-        elemento.children[0].setAttribute("contenteditable", "true");
-        elemento.children[0].setAttribute("onblur", "salva(this)");
-    }
+<body onload="pullProdutos()">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+            </div>
+            <div class="col-lg-10">
+                <h2>Produtos</h2>
+                <table class="table table-bordered table-hover" id="tabela">
+                </table>
 
-    function salva(elemento) { // cria método ajax para fazer o update no banco de dados
-        elemento.setAttribute("contenteditable", "false");
-        //console.log(elemento.parentElement.parentElement);
-        //Recupera e envia todos os dados da linha
-        var line = elemento.parentElement.parentElement;
-        var id = line.children[0].children[0].innerHTML;
-        var nome = line.children[1].children[0].innerHTML;
-        var descricao = line.children[2].children[0].innerHTML;
-        var codigo = line.children[3].children[0].innerHTML;
-        var fabricante = line.children[4].children[0].innerHTML;
-        var validade = line.children[5].children[0].innerHTML;
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                window.alert("" + this.responseText);
-            }
-        }
-        xhttp.open("GET", "banco/operations.php?q=atualizar&id=" + id + "&nome=" + nome + "&descricao=" + descricao + "&codigo=" + codigo + "&fabricante=" + fabricante + "&validade=" + validade, true);
-        xhttp.send();
-    }
+                <script>
+                    function pullProdutos() {
+                        document.getElementById("tabela").innerHTML = "";
+                        var xhttp = new XMLHttpRequest();
+                        xhttp.onreadystatechange = function() {
+                            if (this.readyState == 4 && this.status == 200) {
+                                var response = JSON.parse(this.responseText);
+                                console.log(response);
+                                var table = "<thead><tr><th>Nome</th><th>Descrição</th><th>Codigo</th><th>Fabricante</th><th>Validade</th><th>Ações</th></tr></thead>";
+                                var newLine = "";
+                                for (var i = response.length - 1; i >= 0; i--) {
+                                    newLine += "<tbody><tr><td hidden=\"true\">" + response[i].id + "</td><td style=\"vertical-align: middle;\">" + response[i].nome + "</td><td style=\"vertical-align: middle;\">" + response[i].descricao + "</td><td style=\"vertical-align: middle;\">" + response[i].codigo + "</td><td style=\"vertical-align: middle;\">" +
+                                        response[i].fabricante + "</td><td style=\"vertical-align: middle;\">" + response[i].validade + "</td><td style=\"vertical-align: middle;\"><button style=\"margin-right: 10px; margin-left: 10px;\" class=\"btn btn-primary btn-sm\" onclick=\"includeEvents(this)\">Editar</button><button style=\"margin-right: 10px; margin-left: 10px;\" class=\"btn btn-danger btn-sm\" onclick=\"deletar(this)\">Deletar</button></td></tr></tbody>"
+                                }
+                                table += newLine;
+                                document.getElementById("tabela").innerHTML = table;
+                            }
+                        };
+                        xhttp.open("POST", "banco/operations.php?q=consulta", true);
+                        xhttp.send();
+                    }
 
-    //Deleta o registro no banco de dados
-    function deletar(elemento) {
-        var xhttp = new XMLHttpRequest();
-        var line = elemento.parentElement.parentElement;
-        var id = line.children[0].children[0].innerHTML; // somente é necessário a recuperação do ID.
-        xhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                document.getElementById("tabela").innerHTML = "";
-                window.alert("" + this.responseText);
-                pullProdutos();
-            }
-        }
-        xhttp.open("GET", "banco/operations.php?q=delete&id=" + id, true);
-        xhttp.send();
-    }
-</script>
+                    function includeEvents(elemento) {
+                        elemento.parentElement.parentElement.setAttribute("contenteditable", "true");
+                        elemento.parentElement.parentElement.children[6].setAttribute("contenteditable", "false");
+                        elemento.parentElement.parentElement.children[6].innerHTML = "<td style=\"vertical-align: middle;\"><button style=\"margin-right: 10px; margin-left: 10px;\" class=\"btn btn-success btn-sm\" onclick=\"salva(this)\">Salvar</button><button style=\"margin-right: 10px; margin-left: 10px;\" class=\"btn btn-danger btn-sm\" onclick=\"deletar(this)\">Deletar</button></td>";                     
+                    }
 
-<?php include "layout/footer.html" ?>
+                    function salva(elemento) {
+                        elemento.parentElement.parentElement.setAttribute("contenteditable", "false");                        
+                        var line = elemento.parentElement.parentElement;
+                        var id = line.children[0].innerHTML;
+                        var nome = line.children[1].innerHTML;
+                        var descricao = line.children[2].innerHTML;
+                        var codigo = line.children[3].innerHTML;
+                        var fabricante = line.children[4].innerHTML;
+                        var validade = line.children[5].innerHTML;
+                        var xhttp = new XMLHttpRequest();
+                        xhttp.onreadystatechange = function() {
+                            if (this.readyState == 4 && this.status == 200) {
+                                window.alert("" + this.responseText);
+                            }
+                        }
+                        xhttp.open("POST", "banco/operations.php?q=atualizar&id=" + id + "&nome=" + nome + "&descricao=" + descricao + "&codigo=" + codigo + "&fabricante=" + fabricante + "&validade=" + validade, true);
+                        xhttp.send();
+                        elemento.parentElement.parentElement.children[6].innerHTML = "<td style=\"vertical-align: middle;\"><button style=\"margin-right: 10px; margin-left: 10px;\" class=\"btn btn-primary btn-sm\" onclick=\"includeEvents(this)\">Editar</button><button style=\"margin-right: 10px; margin-left: 10px;\" class=\"btn btn-danger btn-sm\" onclick=\"deletar(this)\">Deletar</button></td>";
+                    }
+
+                    function deletar(elemento) {
+                        var xhttp = new XMLHttpRequest();
+                        var line = elemento.parentElement.parentElement;
+                        var id = line.children[0].innerHTML;
+                        xhttp.onreadystatechange = function() {
+                            if (this.readyState == 4 && this.status == 200) {
+                                document.getElementById("tabela").innerHTML = "";
+                                window.alert("" + this.responseText);
+                                pullProdutos();
+                            }
+                        }
+                        xhttp.open("POST", "banco/operations.php?q=remover&id=" + id, true);
+                        xhttp.send();
+                    }
+                </script>
+            </div>
+            <div class="col-sm">
+            </div>
+        </div>
+    </div>
+    <?php include "layout/footer.html" ?>

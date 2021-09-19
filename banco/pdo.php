@@ -44,11 +44,11 @@ class usePDO {
             $cnx = $this->getInstance();
             $sql = "CREATE TABLE IF NOT EXISTS produto (
                 id INT(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-                nome VARCHAR(50) NOT NULL,
+                nome VARCHAR(100) NOT NULL,
                 descricao VARCHAR(100) NOT NULL,
-                codigo VARCHAR(1) NOT NULL,
+                codigo VARCHAR(100) NOT NULL,
 				fabricante VARCHAR(100) NOT NULL,
-				validade VARCHAR(10))";				
+				validade VARCHAR(50))";				
             
             $cnx->exec($sql);
         }

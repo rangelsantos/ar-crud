@@ -1,4 +1,11 @@
-<a href="home.php">Home</a>
-<a href="banco.php">Banco</a>
-<a href="cadbanco.php">Novo</a>
-<a href="sair.php">Sair</a>
+<ul class="nav nav-pills justify-content-center">
+    <li class="nav-item">
+        <a class="nav-link" href="banco.php">Banco</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="cadbanco.php">Novo</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="sair.php">Sair</a>
+    </li>
+</ul>
