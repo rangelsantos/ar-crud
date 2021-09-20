@@ -2,7 +2,7 @@
 session_start();
 $_SESSION['status'] = $_SESSION['status'] ?? NULL;
 if ($_SESSION['status'] == true) {
-    header("location: home.php");
+    header("location: banco.php");
 }
 ?>
 <?php include "layout/header.html"; ?>
